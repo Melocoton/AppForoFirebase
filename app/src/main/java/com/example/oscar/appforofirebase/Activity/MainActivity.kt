@@ -1,16 +1,12 @@
-package com.example.oscar.appforofirebase
+package com.example.oscar.appforofirebase.Activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_main.*
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.AuthResult
-import com.google.android.gms.tasks.Task
-import android.support.annotation.NonNull
 import android.util.Log
-import com.google.android.gms.tasks.OnCompleteListener
+import com.example.oscar.appforofirebase.R
 import org.jetbrains.anko.toast
 
 

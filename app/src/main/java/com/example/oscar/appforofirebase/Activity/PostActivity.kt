@@ -1,4 +1,4 @@
-package com.example.oscar.appforofirebase
+package com.example.oscar.appforofirebase.Activity
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -8,6 +8,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.oscar.appforofirebase.R
 import kotlinx.android.synthetic.main.activity_post2.*
 import kotlinx.android.synthetic.main.app_bar_post.*
 
