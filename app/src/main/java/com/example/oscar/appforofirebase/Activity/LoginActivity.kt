@@ -23,9 +23,13 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import android.util.Log
+import android.widget.Toast
 import com.example.oscar.appforofirebase.R
+import com.google.firebase.auth.FirebaseAuth
 
 import kotlinx.android.synthetic.main.activity_login.*
+import org.jetbrains.anko.toast
 
 /**
  * A login screen that offers login via email/password.
@@ -35,10 +39,15 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private var mAuthTask: UserLoginTask? = null
+    lateinit var mAuth: FirebaseAuth
+    val TAG = "###"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        mAuth = FirebaseAuth.getInstance()
+
         // Set up the login form.
         populateAutoComplete()
         password.setOnEditorActionListener(TextView.OnEditorActionListener { _, id, _ ->
@@ -137,9 +146,52 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true)
-            mAuthTask = UserLoginTask(emailStr, passwordStr)
-            mAuthTask!!.execute(null as Void?)
+            tryLogin(emailStr, passwordStr)
+//            mAuthTask = UserLoginTask(emailStr, passwordStr)
+//            mAuthTask!!.execute(null as Void?)
         }
+    }
+
+    private fun tryLogin(email: String, password: String){
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this) { task ->
+                    if (task.isSuccessful) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "createUserWithEmail:success")
+                        val user = mAuth.currentUser
+                        toast("Created user ${user.toString()}, press again to logIn")
+                        showProgress(false)
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "createUserWithEmail:failure", task.exception)
+//                        Toast.makeText(this, "Authentication failed.",
+//                                Toast.LENGTH_SHORT).show()
+
+                        mAuth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(this) { task ->
+                                    if (task.isSuccessful) {
+                                        // Sign in success, update UI with the signed-in user's information
+                                        Log.d(TAG, "signInWithEmail:success")
+                                        val user = mAuth.currentUser
+                                        toast("Signed in with ${user.toString()}")
+                                        showProgress(false)
+                                    } else {
+                                        // If sign in fails, display a message to the user.
+                                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                                        Toast.makeText(this, "Authentication failed.",
+                                                Toast.LENGTH_SHORT).show()
+                                        showProgress(false)
+                                    }
+
+                                    // ...
+                                }
+
+                    }
+
+                    // ...
+                }
+
     }
 
     private fun isEmailValid(email: String): Boolean {
@@ -260,6 +312,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                         it[1] == mPassword
                     }
                     ?: true
+
         }
 
         override fun onPostExecute(success: Boolean?) {
