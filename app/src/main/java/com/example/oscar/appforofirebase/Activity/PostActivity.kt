@@ -8,20 +8,35 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import com.example.oscar.appforofirebase.Model.Usuario
 import com.example.oscar.appforofirebase.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_post2.*
 import kotlinx.android.synthetic.main.app_bar_post.*
+import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.toast
+import kotlin.system.exitProcess
 
 class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var user: FirebaseUser
+    private val database = FirebaseDatabase.getInstance()
+    private val TAG = "###"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_post2)
         setSupportActionBar(toolbar)
 
+        mAuth = FirebaseAuth.getInstance()
+
+        getUser()
+
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            toast( user.email + " : " + user.uid)
         }
 
         val toggle = ActionBarDrawerToggle(
@@ -30,6 +45,20 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun getUser(){
+        if (mAuth.currentUser != null) {
+            user = mAuth.currentUser!!
+        }else{
+            //volver a la pantalla de login
+        }
+
+        val refUsers = database.getReference("Users")
+        val usuario = Usuario(0, "Oscar", user.email.toString())
+        val idUsuario = refUsers.push().key
+        refUsers.push().setValue(usuario)
+
     }
 
     override fun onBackPressed() {

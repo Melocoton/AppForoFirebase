@@ -23,6 +23,7 @@ import android.widget.TextView
 
 import java.util.ArrayList
 import android.Manifest.permission.READ_CONTACTS
+import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import com.example.oscar.appforofirebase.R
@@ -39,8 +40,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private var mAuthTask: UserLoginTask? = null
-    lateinit var mAuth: FirebaseAuth
-    val TAG = "###"
+    private lateinit var mAuth: FirebaseAuth
+    private val TAG = "###"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,6 +155,9 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     private fun tryLogin(email: String, password: String){
 
+        //temporal
+        var email = "correo@correo.com"
+        var password = "correo"
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
@@ -163,7 +167,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                         toast("Created user ${user.toString()}, press again to logIn")
                         showProgress(false)
                     } else {
-                        // If sign in fails, display a message to the user.
+                        // If sign in fails, display a message to the user. Try to login
                         Log.w(TAG, "createUserWithEmail:failure", task.exception)
 //                        Toast.makeText(this, "Authentication failed.",
 //                                Toast.LENGTH_SHORT).show()
@@ -175,7 +179,12 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                                         Log.d(TAG, "signInWithEmail:success")
                                         val user = mAuth.currentUser
                                         toast("Signed in with ${user.toString()}")
-                                        showProgress(false)
+                                        //showProgress(false)
+
+                                        val intent = Intent(this, PostActivity::class.java)
+
+                                        this.startActivityForResult(intent,0)
+
                                     } else {
                                         // If sign in fails, display a message to the user.
                                         Log.w(TAG, "signInWithEmail:failure", task.exception)
