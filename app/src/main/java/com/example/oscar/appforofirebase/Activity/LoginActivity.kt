@@ -26,8 +26,10 @@ import android.Manifest.permission.READ_CONTACTS
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import com.example.oscar.appforofirebase.Model.Usuario
 import com.example.oscar.appforofirebase.R
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.toast
@@ -41,6 +43,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      */
     private var mAuthTask: UserLoginTask? = null
     private lateinit var mAuth: FirebaseAuth
+    private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val TAG = "###"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +61,10 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             }
             false
         })
+
+        //temporal
+        email.setText("correo@correo.com", TextView.BufferType.EDITABLE)
+        password.setText("correo", TextView.BufferType.EDITABLE)
 
         email_sign_in_button.setOnClickListener { attemptLogin() }
     }
@@ -155,15 +162,14 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
     private fun tryLogin(email: String, password: String){
 
-        //temporal
-        var email = "correo@correo.com"
-        var password = "correo"
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
                         Log.d(TAG, "createUserWithEmail:success")
                         val user = mAuth.currentUser
+
+                        registerUser(user!!.uid, user.email!!)
                         toast("Created user ${user.toString()}, press again to logIn")
                         showProgress(false)
                     } else {
@@ -201,6 +207,11 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                     // ...
                 }
 
+    }
+
+    private fun registerUser(uid: String, email: String){
+        val user = Usuario(uid,"", email)
+        db.collection("users").add(user)
     }
 
     private fun isEmailValid(email: String): Boolean {

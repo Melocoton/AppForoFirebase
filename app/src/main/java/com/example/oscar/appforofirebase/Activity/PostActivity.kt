@@ -1,29 +1,23 @@
 package com.example.oscar.appforofirebase.Activity
 
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import com.example.oscar.appforofirebase.Model.Usuario
 import com.example.oscar.appforofirebase.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_post2.*
 import kotlinx.android.synthetic.main.app_bar_post.*
-import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.toast
-import kotlin.system.exitProcess
 
 class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var user: FirebaseUser
-    private val database = FirebaseDatabase.getInstance()
     private val TAG = "###"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,10 +48,6 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             //volver a la pantalla de login
         }
 
-        val refUsers = database.getReference("Users")
-        val usuario = Usuario(0, "Oscar", user.email.toString())
-        val idUsuario = refUsers.push().key
-        refUsers.push().setValue(usuario)
 
     }
 
