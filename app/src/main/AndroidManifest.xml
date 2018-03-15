@@ -33,7 +33,7 @@
         <!-- android:name=".Activity.LoginActivity" -->
         <!-- android:label="@string/title_activity_login"></activity> -->
         <activity
-            android:name=".CommentActivity"
+            android:name=".Activity.CommentActivity"
             android:label="@string/title_activity_comment"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
