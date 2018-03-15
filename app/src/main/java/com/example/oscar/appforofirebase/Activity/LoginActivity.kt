@@ -43,7 +43,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
      */
     private var mAuthTask: UserLoginTask? = null
     private lateinit var mAuth: FirebaseAuth
-    private var db: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
     private val TAG = "###"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -190,6 +190,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
                                         val intent = Intent(this, PostActivity::class.java)
 
                                         this.startActivityForResult(intent,0)
+                                        showProgress(false)
 
                                     } else {
                                         // If sign in fails, display a message to the user.
@@ -210,7 +211,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
     }
 
     private fun registerUser(uid: String, email: String){
-        val user = Usuario(uid,"", email)
+        val user = Usuario(uid,"", email, "")
         db.collection("users").add(user)
     }
 
