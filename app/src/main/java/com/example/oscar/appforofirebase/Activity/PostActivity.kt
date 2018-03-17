@@ -114,8 +114,6 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }else{
             //volver a la pantalla de login
         }
-
-
     }
 
     override fun onBackPressed() {
