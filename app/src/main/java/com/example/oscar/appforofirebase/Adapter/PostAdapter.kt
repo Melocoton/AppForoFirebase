@@ -45,9 +45,9 @@ class PostAdapter(val context: Context, val layout:Int, val dataList: List<PostR
 
         private fun onItemClick(dataItem: PostResult) {
 
+            //cuando pulsemos sobre un post abrimos una segunda activity al que la pasamos el id de ese post
             val intent = Intent(context, CommentActivity::class.java)
             intent.putExtra("postPulsado", dataItem.id)
-//            context.startActivity(intent) as Activity
             (context as Activity).startActivityForResult(intent,0)
 
 

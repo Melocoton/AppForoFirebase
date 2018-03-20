@@ -50,14 +50,13 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private fun getPost() {
         var listaPost = mutableListOf<PostResult>()
-        //traer coleccion 1 vez
+        //traer coleccion post 1 vez
 //        db.collection("Post")
 //                .get()
 //                .addOnCompleteListener({
 //                    if (it.isSuccessful){
 //                        for (result in it.result){
 //                            Log.d("ResultFirestore", "ResultID -> ${result.id} : Data -> ${result.data}")
-//                            Log.d("ResultFiresotre", "TituloPost: ${result.data["titulo"]}")
 //                            val post = PostResult(result.id, result.data["autor"].toString(), result.data["titulo"].toString())
 //                            listaPost.add(post)
 //                        }
@@ -67,14 +66,19 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                    }
 //                })
 
-        //poner listener y traer coleccion cada vez que cambie
+        //poner listener y traer coleccion post cada vez que cambie
         db.collection("Post").addSnapshotListener({ snapshot, _ ->
             listaPost.clear()
+            //snapshot es un objeto con un mapa de strings de los documentos de la colleccion y los campos que contiene
+            //_ es normalmente un objeto firestoreexception para el control de errores pero una aplicacion bien hecha no tiene errores asi que nos lo saltamos
             snapshot.forEach {
                 Log.d("ResultFirestore", "ResultID -> ${it.id} : Data -> ${it.data}")
                 listaPost.add(PostResult(it.id, it.data["autor"].toString(), it.data["titulo"].toString()))
             }
             pintarLayout(listaPost)
+        })
+        db.collection("post").addSnapshotListener({querySnapshot: QuerySnapshot?, firebaseFirestoreException: FirebaseFirestoreException? ->
+
         })
     }
 

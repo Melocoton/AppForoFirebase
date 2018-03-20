@@ -155,8 +155,6 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
             // perform the user login attempt.
             showProgress(true)
             tryLogin(emailStr, passwordStr)
-//            mAuthTask = UserLoginTask(emailStr, passwordStr)
-//            mAuthTask!!.execute(null as Void?)
         }
     }
 

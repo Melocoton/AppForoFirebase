@@ -34,6 +34,7 @@ class CommentActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         mAuth = FirebaseAuth.getInstance()
+        //cojemos el id del documento pulsado o id del post
         postId = intent.getSerializableExtra("postPulsado") as String
 
         getUser()
@@ -44,6 +45,7 @@ class CommentActivity : AppCompatActivity() {
 
     private fun getComment() {
         var listaComentario = mutableListOf<CommentResult>()
+        //ponemos un listener a la coleccion comments del documento con id postid de la coleccion post
         db.collection("Post").document(postId).collection("Comments").addSnapshotListener({ snapshot, _ ->
             listaComentario.clear()
             snapshot.forEach {
@@ -68,6 +70,7 @@ class CommentActivity : AppCompatActivity() {
                         hint = "Comentario"
                     }
                     positiveButton("Aceptar"){
+                        //creamos un objeto comment con el texto introducido y el email del usuario logueado
                         val comment: Comentario = Comentario(user.email!!, etComment.text.toString())
                         guardarComent(comment)
                     }
@@ -78,6 +81,7 @@ class CommentActivity : AppCompatActivity() {
     }
 
     private fun guardarComent(comment: Comentario) {
+        //añadimos a la coleccion post en el documento con id del postid a la coleccion comments el objeto comment
         db.collection("Post").document(postId).collection("Comments").add(comment)
     }
 
