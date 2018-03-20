@@ -44,7 +44,7 @@ class CommentActivity : AppCompatActivity() {
 
     private fun getComment() {
         var listaComentario = mutableListOf<CommentResult>()
-        db.collection("Post").document(postId).collection("Comments").addSnapshotListener({snapshot, firebaseFirestoreException ->
+        db.collection("Post").document(postId).collection("Comments").addSnapshotListener({ snapshot, _ ->
             listaComentario.clear()
             snapshot.forEach {
                 Log.d("ResultFirestore", "ResultID -> ${it.id} : Data -> ${it.data}")

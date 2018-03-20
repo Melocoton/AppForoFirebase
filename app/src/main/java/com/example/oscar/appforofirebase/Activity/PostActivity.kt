@@ -1,7 +1,6 @@
 package com.example.oscar.appforofirebase.Activity
 
 import android.os.Bundle
-import android.support.annotation.NonNull
 import android.support.design.widget.NavigationView
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
@@ -14,14 +13,12 @@ import com.example.oscar.appforofirebase.Adapter.PostAdapter
 import com.example.oscar.appforofirebase.Model.Post
 import com.example.oscar.appforofirebase.Model.PostResult
 import com.example.oscar.appforofirebase.R
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.*
-import kotlinx.android.synthetic.main.activity_post2.*
+import kotlinx.android.synthetic.main.activity_post.*
 import kotlinx.android.synthetic.main.app_bar_post.*
-import kotlinx.android.synthetic.main.content_post2.*
+import kotlinx.android.synthetic.main.content_post.*
 import org.jetbrains.anko.*
 
 class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -33,7 +30,7 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_post2)
+        setContentView(R.layout.activity_post)
         setSupportActionBar(toolbar)
 
         mAuth = FirebaseAuth.getInstance()
@@ -71,7 +68,7 @@ class PostActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 //                })
 
         //poner listener y traer coleccion cada vez que cambie
-        db.collection("Post").addSnapshotListener({ snapshot: QuerySnapshot, firebaseFirestoreException: FirebaseFirestoreException? ->
+        db.collection("Post").addSnapshotListener({ snapshot, _ ->
             listaPost.clear()
             snapshot.forEach {
                 Log.d("ResultFirestore", "ResultID -> ${it.id} : Data -> ${it.data}")

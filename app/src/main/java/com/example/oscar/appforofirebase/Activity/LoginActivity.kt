@@ -179,8 +179,8 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 //                                Toast.LENGTH_SHORT).show()
 
                         mAuth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener(this) { task ->
-                                    if (task.isSuccessful) {
+                                .addOnCompleteListener(this) {
+                                    if (it.isSuccessful) {
                                         // Sign in success, update UI with the signed-in user's information
                                         Log.d(TAG, "signInWithEmail:success")
                                         val user = mAuth.currentUser
@@ -194,7 +194,7 @@ class LoginActivity : AppCompatActivity(), LoaderCallbacks<Cursor> {
 
                                     } else {
                                         // If sign in fails, display a message to the user.
-                                        Log.w(TAG, "signInWithEmail:failure", task.exception)
+                                        Log.w(TAG, "signInWithEmail:failure", it.exception)
                                         Toast.makeText(this, "Authentication failed.",
                                                 Toast.LENGTH_SHORT).show()
                                         showProgress(false)
